@@ -1,1 +1,138 @@
-hola
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscador Predictivo</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+    }
+
+    .contenedor {
+        width: 300px;
+        position: relative;
+    }
+
+    #buscador {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    #resultados {
+        border: 1px solid #ccc;
+        border-top: none;
+        position: absolute;
+        width: 100%;
+        background: white;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .item {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .item:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+</head>
+<body>
+
+<h2>Buscador Predictivo de Marcas de Coche</h2>
+
+<div class="contenedor">
+    <input
+        type="text"
+        id="buscador"
+        placeholder="Escribe una marca..."
+        autocomplete="off"
+    >
+    <div id="resultados"></div>
+</div>
+
+<script>
+// Array JSON de marcas de coche
+const marcas = [
+    { id: 1, nombre: "Audi" },
+    { id: 2, nombre: "BMW" },
+    { id: 3, nombre: "Citroën" },
+    { id: 4, nombre: "Cupra" },
+    { id: 5, nombre: "Dacia" },
+    { id: 6, nombre: "Ferrari" },
+    { id: 7, nombre: "Fiat" },
+    { id: 8, nombre: "Ford" },
+    { id: 9, nombre: "Honda" },
+    { id: 10, nombre: "Hyundai" },
+    { id: 11, nombre: "Kia" },
+    { id: 12, nombre: "Lexus" },
+    { id: 13, nombre: "Mazda" },
+    { id: 14, nombre: "Mercedes-Benz" },
+    { id: 15, nombre: "Nissan" },
+    { id: 16, nombre: "Opel" },
+    { id: 17, nombre: "Peugeot" },
+    { id: 18, nombre: "Porsche" },
+    { id: 19, nombre: "Renault" },
+    { id: 20, nombre: "Seat" },
+    { id: 21, nombre: "Skoda" },
+    { id: 22, nombre: "Tesla" },
+    { id: 23, nombre: "Toyota" },
+    { id: 24, nombre: "Volkswagen" },
+    { id: 25, nombre: "Volvo" }
+];
+
+const buscador = document.getElementById("buscador");
+const resultados = document.getElementById("resultados");
+
+buscador.addEventListener("input", () => {
+    const texto = buscador.value.trim().toLowerCase();
+
+    resultados.innerHTML = "";
+
+    if (texto === "") {
+        resultados.style.display = "none";
+        return;
+    }
+
+    const coincidencias = marcas.filter(marca =>
+        marca.nombre.toLowerCase().includes(texto)
+    );
+
+    if (coincidencias.length === 0) {
+        resultados.style.display = "none";
+        return;
+    }
+
+    coincidencias.forEach(marca => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = marca.nombre;
+
+        div.addEventListener("click", () => {
+            buscador.value = marca.nombre;
+            resultados.style.display = "none";
+        });
+
+        resultados.appendChild(div);
+    });
+
+    resultados.style.display = "block";
+});
+
+// Ocultar resultados al hacer clic fuera
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".contenedor")) {
+        resultados.style.display = "none";
+    }
+});
+</script>
+
+</body>
+</html>
